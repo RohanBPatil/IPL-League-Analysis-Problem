@@ -29,7 +29,7 @@ public class CSVRuns {
 	public double average;
 
 	@CsvBindByName(column = "BF", required = true)
-	public int bf;
+	public int ballsFaced;
 
 	@CsvBindByName(column = "SR", required = true)
 	public double strikeRate;
@@ -50,7 +50,7 @@ public class CSVRuns {
 	public String toString() {
 		return "IPLRunsCSV{" + "Position='" + position + '\'' + ", Player='" + player + '\'' + ", Matches='" + matches
 				+ '\'' + ", Innings='" + innings + '\'' + ", NO='" + notOut + '\'' + ", Runs='" + runs + '\''
-				+ ", High Score='" + highScore + '\'' + ", Average='" + average + ", BF='" + bf + '\''
+				+ ", High Score='" + highScore + '\'' + ", Average='" + average + ", BF='" + ballsFaced + '\''
 				+ ", Strike Rate='" + strikeRate + '\'' + ", 100='" + hundreds + '\'' + ", 50='" + fiftys + ", 4s='"
 				+ fours + '\'' + ", 6s='" + sixes + '}';
 	}
@@ -70,7 +70,7 @@ public class CSVRuns {
 	}
 
 	public CSVRuns(int position, String player, int matches, int innings, int notOut, int runs, String highScore,
-			double average, int bf, double strikeRate, int hundreds, int fiftys, int fours, int sixes) {
+			double average, int ballsFaced, double strikeRate, int hundreds, int fiftys, int fours, int sixes) {
 		this.position = position;
 		this.player = player;
 		this.matches = matches;
@@ -79,7 +79,7 @@ public class CSVRuns {
 		this.runs = runs;
 		this.highScore = highScore;
 		this.average = average;
-		this.bf = bf;
+		this.ballsFaced = ballsFaced;
 		this.strikeRate = strikeRate;
 		this.hundreds = hundreds;
 		this.fiftys = fiftys;

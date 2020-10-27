@@ -112,8 +112,27 @@ public class IPLAnalysis {
 		return maxFoursPlayer;
 	}
 
+	/**
+	 * UC 4 : returns player having max strike rate with 4s and 6s
+	 * 
+	 * @param filePath
+	 * @return
+	 * @throws CSVBuilderException
+	 * @throws IOException
+	 */
+	public CSVRuns getPlayerMaxStrikeRateWithFoursSixes(String filePath) throws CSVBuilderException, IOException {
+		loadRunsCSV(filePath);
+		CSVRuns player = runsCSVList.stream()
+				.max((x, y) -> Double.compare(calculateStrikeRateFoursSixes(x), calculateStrikeRateFoursSixes(y)))
+				.get();
+		return player;
+	}
+
+	private static double calculateStrikeRateFoursSixes(CSVRuns player) {
+		return (player.fours * 4 + player.sixes * 6) * 100 / player.ballsFaced;
+	}
+
 	public static void main(String[] args) {
 		System.out.println("Welcome to IPL League analysis Problem");
 	}
-
 }

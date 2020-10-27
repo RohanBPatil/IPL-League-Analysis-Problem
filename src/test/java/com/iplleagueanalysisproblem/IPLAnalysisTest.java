@@ -98,4 +98,18 @@ class IPLAnalysisTest {
 		CSVRuns actualMaxSixesPlayer = iplAnalysis.getPlayerMaxSixes(RUNS_FILE_PATH);
 		assertEquals(expectedMaxSixesPlayer, actualMaxSixesPlayer);
 	}
+
+	/**
+	 * UC 4 : checking player having max strike rate with 4s and 6s
+	 * 
+	 * @throws CSVBuilderException
+	 * @throws IOException
+	 */
+	@Test
+	void givenRunsFilePath_shouldReturn_cricketerWithMaxStrikeRateWithFoursAndSixes()
+			throws CSVBuilderException, IOException {
+		CSVRuns expectedPlayer = new CSVRuns(97, "Ishant Sharma", 13, 3, 3, 10, "10*", 0, 3, 333.33, 0, 0, 1, 1);
+		CSVRuns actualPlayer = iplAnalysis.getPlayerMaxStrikeRateWithFoursSixes(RUNS_FILE_PATH);
+		assertEquals(expectedPlayer, actualPlayer);
+	}
 }
