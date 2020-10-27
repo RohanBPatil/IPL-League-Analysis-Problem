@@ -66,8 +66,22 @@ public class IPLAnalysis {
 	 */
 	public double getTopBattingAvg(String filePath) throws CSVBuilderException, IOException {
 		loadRunsCSV(filePath);
-		double max = runsCSVList.stream().map(entry -> entry.average).max(Double::compare).get();
-		return max;
+		double maxBattingAvg = runsCSVList.stream().map(entry -> entry.average).max(Double::compare).get();
+		return maxBattingAvg;
+	}
+
+	/**
+	 * UC 2 : returns top striking rate
+	 * 
+	 * @param filePath
+	 * @return
+	 * @throws CSVBuilderException
+	 * @throws IOException
+	 */
+	public double getTopStrikingRate(String filePath) throws CSVBuilderException, IOException {
+		loadRunsCSV(filePath);
+		double maxStrikingRate = runsCSVList.stream().map(entry -> entry.strikeRate).max(Double::compare).get();
+		return maxStrikingRate;
 	}
 
 	public static void main(String[] args) {

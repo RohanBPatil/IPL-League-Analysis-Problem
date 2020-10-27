@@ -58,4 +58,16 @@ class IPLAnalysisTest {
 		double maxBattingAvg = iplAnalysis.getTopBattingAvg(RUNS_FILE_PATH);
 		assertEquals(83.2, maxBattingAvg);
 	}
+
+	/**
+	 * UC 2 : checking top striking rate
+	 * 
+	 * @throws CSVBuilderException
+	 * @throws IOException
+	 */
+	@Test
+	void givenRunsFilePath_shouldReturn_topStrikiingRate() throws CSVBuilderException, IOException {
+		double maxBattingAvg = iplAnalysis.getTopStrikingRate(RUNS_FILE_PATH);
+		assertEquals(333.33, maxBattingAvg);
+	}
 }
