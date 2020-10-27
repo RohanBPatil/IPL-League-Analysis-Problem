@@ -84,7 +84,36 @@ public class IPLAnalysis {
 		return maxStrikingRate;
 	}
 
+	/**
+	 * UC 3 : returns player scoring maximum number of fours
+	 * 
+	 * @param filePath
+	 * @return
+	 * @throws CSVBuilderException
+	 * @throws IOException
+	 */
+	public CSVRuns getPlayerMaxFours(String filePath) throws CSVBuilderException, IOException {
+		loadRunsCSV(filePath);
+		CSVRuns maxFoursPlayer = runsCSVList.stream().max((x, y) -> Integer.compare(x.fours, y.fours)).get();
+		return maxFoursPlayer;
+	}
+
+	/**
+	 * UC 3 : returns player scoring maximum number of sixes
+	 * 
+	 * @param filePath
+	 * @return
+	 * @throws CSVBuilderException
+	 * @throws IOException
+	 */
+	public CSVRuns getPlayerMaxSixes(String filePath) throws CSVBuilderException, IOException {
+		loadRunsCSV(filePath);
+		CSVRuns maxFoursPlayer = runsCSVList.stream().max((x, y) -> Integer.compare(x.sixes, y.sixes)).get();
+		return maxFoursPlayer;
+	}
+
 	public static void main(String[] args) {
 		System.out.println("Welcome to IPL League analysis Problem");
 	}
+
 }

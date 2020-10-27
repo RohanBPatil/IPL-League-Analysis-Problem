@@ -70,4 +70,32 @@ class IPLAnalysisTest {
 		double maxBattingAvg = iplAnalysis.getTopStrikingRate(RUNS_FILE_PATH);
 		assertEquals(333.33, maxBattingAvg);
 	}
+
+	/**
+	 * UC 3 : checking player with maximum fours
+	 * 
+	 * @throws CSVBuilderException
+	 * @throws IOException
+	 */
+	@Test
+	void givenRunsFilePath_shouldReturn_cricketerWithMaxFours() throws CSVBuilderException, IOException {
+		CSVRuns expectedMaxFoursPlayer = new CSVRuns(4, "Shikhar Dhawan", 16, 16, 1, 521, "97*", 34.73, 384, 135.67, 0,
+				5, 64, 11);
+		CSVRuns actualMaxFoursPlayer = iplAnalysis.getPlayerMaxFours(RUNS_FILE_PATH);
+		assertEquals(expectedMaxFoursPlayer, actualMaxFoursPlayer);
+	}
+
+	/**
+	 * UC 3 : checking player with maximum sixes
+	 * 
+	 * @throws CSVBuilderException
+	 * @throws IOException
+	 */
+	@Test
+	void givenRunsFilePath_shouldReturn_cricketerWithMaxSixes() throws CSVBuilderException, IOException {
+		CSVRuns expectedMaxSixesPlayer = new CSVRuns(5, "Andre Russell", 14, 13, 4, 510, "80*", 56.66, 249, 204.81, 0,
+				4, 31, 52);
+		CSVRuns actualMaxSixesPlayer = iplAnalysis.getPlayerMaxSixes(RUNS_FILE_PATH);
+		assertEquals(expectedMaxSixesPlayer, actualMaxSixesPlayer);
+	}
 }
