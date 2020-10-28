@@ -138,11 +138,11 @@ public class IPLAnalysis {
 		return jsonSortedPlayers;
 	}
 
-	private <E> void sortBattingList(List<E> csvList, Comparator<E> battingComparator) {
+	private void sortBattingList(List<CSVRuns> csvList, Comparator<CSVRuns> battingComparator) {
 		for (int i = 0; i < csvList.size(); i++) {
 			for (int j = 0; j < csvList.size() - i - 1; j++) {
-				E player1 = csvList.get(j);
-				E player2 = csvList.get(j + 1);
+				CSVRuns player1 = csvList.get(j);
+				CSVRuns player2 = csvList.get(j + 1);
 				if (battingComparator.compare(player1, player2) < 0) {
 					csvList.set(j, player2);
 					csvList.set(j + 1, player1);
@@ -161,7 +161,7 @@ public class IPLAnalysis {
 		this.sortBowlingList(wicketsCSVList, BowlingComparator);
 		return wicketsCSVList.get(0).average;
 	}
-	
+
 	/**
 	 * UC 8 : returns top strike rate
 	 * 
@@ -173,7 +173,17 @@ public class IPLAnalysis {
 		return wicketsCSVList.get(0).strikeRate;
 	}
 
-	private <E> void sortBowlingList(List<CSVWickets> csvList, Comparator<CSVWickets> BowlingComparator) {
+	/**
+	 * UC 9 : returns top economy
+	 * 
+	 * @return
+	 */
+	public double getTopEconomy() {
+		CSVWickets topEconomyPlayer = wicketsCSVList.stream().min((x, y) -> Double.compare(x.economy, y.economy)).get();
+		return topEconomyPlayer.economy;
+	}
+
+	private void sortBowlingList(List<CSVWickets> csvList, Comparator<CSVWickets> BowlingComparator) {
 		for (int i = 0; i < csvList.size(); i++) {
 			for (int j = 0; j < csvList.size() - i - 1; j++) {
 				CSVWickets player1 = csvList.get(j);

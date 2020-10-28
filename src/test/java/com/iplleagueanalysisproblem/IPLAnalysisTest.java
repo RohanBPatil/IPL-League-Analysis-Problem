@@ -123,7 +123,7 @@ class IPLAnalysisTest {
 		double topBowlingAvg = iplAnalysis.getTopBowlingAvg();
 		assertEquals(11.0, topBowlingAvg);
 	}
-	
+
 	/**
 	 * UC 8 : checking top strike rate
 	 */
@@ -131,6 +131,15 @@ class IPLAnalysisTest {
 	void givenWicketsFilePath_shouldReturn_topStrikeRate() {
 		double topStrikeRate = iplAnalysis.getTopStrikeRate();
 		assertEquals(8.66, topStrikeRate);
+	}
+
+	/**
+	 * UC 9 : checking top economy
+	 */
+	@Test
+	void givenWicketsFilePath_shouldReturn_topEconomy() {
+		double topEconomy = iplAnalysis.getTopEconomy();
+		assertEquals(4.8, topEconomy);
 	}
 
 }
