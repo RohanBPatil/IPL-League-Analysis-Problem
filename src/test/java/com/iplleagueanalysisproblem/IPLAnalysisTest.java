@@ -160,4 +160,14 @@ class IPLAnalysisTest {
 		CSVWickets[] actualSortedPlayers = new Gson().fromJson(jsonSortedPLayers, CSVWickets[].class);
 		assertEquals("Anukul Roy", actualSortedPlayers[0].playerName);
 	}
+
+	/**
+	 * UC 12 : checking player taking max wickets with best bowling average
+	 */
+	@Test
+	void givenWicketsFilePath_shouldReturn_playertakingMaxWicketsWithBestAvg() {
+		String jsonSortedPLayers = iplAnalysis.getSortedJsonMaxWicketsWithBestBowlingAvg();
+		CSVWickets[] actualSortedPlayers = new Gson().fromJson(jsonSortedPLayers, CSVWickets[].class);
+		assertEquals("Imran Tahir", actualSortedPlayers[0].playerName);
+	}
 }

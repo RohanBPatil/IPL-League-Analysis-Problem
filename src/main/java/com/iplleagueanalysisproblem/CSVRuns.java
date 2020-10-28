@@ -52,6 +52,6 @@ public class CSVRuns {
 				+ '\'' + ", Innings='" + innings + '\'' + ", NO='" + notOut + '\'' + ", Runs='" + runs + '\''
 				+ ", High Score='" + highScore + '\'' + ", Average='" + average + ", BF='" + ballsFaced + '\''
 				+ ", Strike Rate='" + strikeRate + '\'' + ", 100='" + hundreds + '\'' + ", 50='" + fiftys + ", 4s='"
-				+ fours + '\'' + ", 6s='" + sixes + '}';
+				+ fours + '\'' + ", 6s='" + sixes + '}' + "\n";
 	}
 }

@@ -48,7 +48,7 @@ public class CSVWickets {
 		return "IPLWicketsCSV{" + "Position='" + position + '\'' + ", Player='" + playerName + '\'' + ", Matches='"
 				+ matches + '\'' + ", Innings='" + innings + '\'' + ", Overs='" + overs + '\'' + ", Runs='" + runs
 				+ '\'' + ", Wickets='" + wickets + '\'' + ", Average='" + average + ", Economy='" + economy + '\''
-				+ ", Strike Rate='" + strikeRate + '\'' + ", 4w='" + fourWickets + '\'' + ", 5w='" + fiveWickets + '}';
+				+ ", Strike Rate='" + strikeRate + '\'' + ", 4w='" + fourWickets + '\'' + ", 5w='" + fiveWickets + '}' + "\n";
 	}
 
 }
