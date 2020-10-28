@@ -161,6 +161,17 @@ public class IPLAnalysis {
 		this.sortBowlingList(wicketsCSVList, BowlingComparator);
 		return wicketsCSVList.get(0).average;
 	}
+	
+	/**
+	 * UC 8 : returns top strike rate
+	 * 
+	 * @return
+	 */
+	public double getTopStrikeRate() {
+		Comparator<CSVWickets> BowlingComparator = Comparator.comparing(entry -> entry.strikeRate);
+		this.sortBowlingList(wicketsCSVList, BowlingComparator);
+		return wicketsCSVList.get(0).strikeRate;
+	}
 
 	private <E> void sortBowlingList(List<CSVWickets> csvList, Comparator<CSVWickets> BowlingComparator) {
 		for (int i = 0; i < csvList.size(); i++) {

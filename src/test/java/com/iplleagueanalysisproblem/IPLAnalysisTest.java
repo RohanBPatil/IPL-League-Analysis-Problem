@@ -116,12 +116,21 @@ class IPLAnalysisTest {
 	}
 
 	/**
-	 * UC 7 : checking top batting average
+	 * UC 7 : checking top bowling average
 	 */
 	@Test
 	void givenWicketsFilePath_shouldReturn_topBowlingAvg() {
 		double topBowlingAvg = iplAnalysis.getTopBowlingAvg();
 		assertEquals(11.0, topBowlingAvg);
+	}
+	
+	/**
+	 * UC 8 : checking top strike rate
+	 */
+	@Test
+	void givenWicketsFilePath_shouldReturn_topStrikeRate() {
+		double topStrikeRate = iplAnalysis.getTopStrikeRate();
+		assertEquals(8.66, topStrikeRate);
 	}
 
 }
