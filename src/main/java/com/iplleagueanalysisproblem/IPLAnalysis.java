@@ -128,18 +128,31 @@ public class IPLAnalysis {
 	private static double calculateStrikeRateFoursSixes(CSVRuns player) {
 		return (player.fours * 4 + player.sixes * 6) * 100 / player.ballsFaced;
 	}
-	
+
 	/**
 	 * UC 5 : returns player having max average with max strike rate
+	 * 
 	 * @return
 	 */
-	public String getSortedOnMaxRunsAndStrikeRate() {
+	public String getSortedJsonMaxAvgAndStrikeRate() {
 		Comparator<CSVRuns> iplCSVComparator = Comparator.comparing(entry -> entry.average);
 		this.sort(runsCSVList, iplCSVComparator.thenComparing(entry -> entry.strikeRate));
 		String jsonSortedPLayers = new Gson().toJson(runsCSVList);
 		return jsonSortedPLayers;
 	}
-	
+
+	/**
+	 * UC 6 : returns player having max runs with max average
+	 * 
+	 * @return
+	 */
+	public String getSortedJsonMaxRunsAndAverage() {
+		Comparator<CSVRuns> iplCSVComparator = Comparator.comparing(entry -> entry.runs);
+		this.sort(runsCSVList, iplCSVComparator.thenComparing(entry -> entry.average));
+		String jsonSortedPLayers = new Gson().toJson(runsCSVList);
+		return jsonSortedPLayers;
+	}
+
 	private <E> void sort(List<E> csvList, Comparator<E> iplCSVComparator) {
 		for (int i = 0; i < csvList.size(); i++) {
 			for (int j = 0; j < csvList.size() - i - 1; j++) {
@@ -152,7 +165,7 @@ public class IPLAnalysis {
 			}
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		System.out.println("Welcome to IPL League analysis Problem");
 	}

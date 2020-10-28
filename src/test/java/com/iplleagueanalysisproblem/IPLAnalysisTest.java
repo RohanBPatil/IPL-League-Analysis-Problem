@@ -115,8 +115,19 @@ class IPLAnalysisTest {
 	 */
 	@Test
 	void givenRunsFilePath_shouldReturn_playerHavingGoodAvgWithBestStrikeRate() {
-		String jsonSortedPLayers = iplAnalysis.getSortedOnMaxRunsAndStrikeRate();
+		String jsonSortedPLayers = iplAnalysis.getSortedJsonMaxAvgAndStrikeRate();
 		CSVRuns[] actualSortedPlayers = new Gson().fromJson(jsonSortedPLayers, CSVRuns[].class);
 		assertEquals("MS Dhoni", actualSortedPlayers[0].playerName);
 	}
+	
+	/**
+	 * UC 6 : checking player hitting max runs with max average
+	 */
+	@Test
+	void givenRunsFilePath_shouldReturn_playerHittingMaxRunsWithBestAveragee() {
+		String jsonSortedPLayers = iplAnalysis.getSortedJsonMaxRunsAndAverage();
+		CSVRuns[] actualSortedPlayers = new Gson().fromJson(jsonSortedPLayers, CSVRuns[].class);
+		assertEquals("David Warner", actualSortedPlayers[0].playerName);
+	}
+	
 }
