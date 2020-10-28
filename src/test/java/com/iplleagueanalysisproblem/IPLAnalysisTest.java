@@ -52,9 +52,6 @@ class IPLAnalysisTest {
 
 	/**
 	 * UC 1 : checking top batting average
-	 * 
-	 * @throws CSVBuilderException
-	 * @throws IOException
 	 */
 	@Test
 	void givenRunsFilePath_shouldReturn_topBattingAvg() {
@@ -64,9 +61,6 @@ class IPLAnalysisTest {
 
 	/**
 	 * UC 2 : checking top striking rate
-	 * 
-	 * @throws CSVBuilderException
-	 * @throws IOException
 	 */
 	@Test
 	void givenRunsFilePath_shouldReturn_topStrikiingRate() {
@@ -76,9 +70,6 @@ class IPLAnalysisTest {
 
 	/**
 	 * UC 3 : checking player with maximum fours
-	 * 
-	 * @throws CSVBuilderException
-	 * @throws IOException
 	 */
 	@Test
 	void givenRunsFilePath_shouldReturn_cricketerWithMaxFours() {
@@ -88,9 +79,6 @@ class IPLAnalysisTest {
 
 	/**
 	 * UC 3 : checking player with maximum sixes
-	 * 
-	 * @throws CSVBuilderException
-	 * @throws IOException
 	 */
 	@Test
 	void givenRunsFilePath_shouldReturn_cricketerWithMaxSixes() {
@@ -100,9 +88,6 @@ class IPLAnalysisTest {
 
 	/**
 	 * UC 4 : checking player having max strike rate with 4s and 6s
-	 * 
-	 * @throws CSVBuilderException
-	 * @throws IOException
 	 */
 	@Test
 	void givenRunsFilePath_shouldReturn_cricketerWithMaxStrikeRateWithFoursAndSixes() {
@@ -119,7 +104,7 @@ class IPLAnalysisTest {
 		CSVRuns[] actualSortedPlayers = new Gson().fromJson(jsonSortedPLayers, CSVRuns[].class);
 		assertEquals("MS Dhoni", actualSortedPlayers[0].playerName);
 	}
-	
+
 	/**
 	 * UC 6 : checking player hitting max runs with max average
 	 */
@@ -129,5 +114,14 @@ class IPLAnalysisTest {
 		CSVRuns[] actualSortedPlayers = new Gson().fromJson(jsonSortedPLayers, CSVRuns[].class);
 		assertEquals("David Warner", actualSortedPlayers[0].playerName);
 	}
-	
+
+	/**
+	 * UC 7 : checking top batting average
+	 */
+	@Test
+	void givenWicketsFilePath_shouldReturn_topBowlingAvg() {
+		double topBowlingAvg = iplAnalysis.getTopBowlingAvg();
+		assertEquals(11.0, topBowlingAvg);
+	}
+
 }

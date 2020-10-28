@@ -61,10 +61,7 @@ public class IPLAnalysis {
 	/**
 	 * UC 1 : returns top batting average
 	 * 
-	 * @param filePath
 	 * @return
-	 * @throws CSVBuilderException
-	 * @throws IOException
 	 */
 	public double getTopBattingAvg() {
 		double maxBattingAvg = runsCSVList.stream().map(entry -> entry.average).max(Double::compare).get();
@@ -74,10 +71,7 @@ public class IPLAnalysis {
 	/**
 	 * UC 2 : returns top striking rate
 	 * 
-	 * @param filePath
 	 * @return
-	 * @throws CSVBuilderException
-	 * @throws IOException
 	 */
 	public double getTopStrikingRate() {
 		double maxStrikingRate = runsCSVList.stream().map(entry -> entry.strikeRate).max(Double::compare).get();
@@ -87,10 +81,7 @@ public class IPLAnalysis {
 	/**
 	 * UC 3 : returns player scoring maximum number of fours
 	 * 
-	 * @param filePath
 	 * @return
-	 * @throws CSVBuilderException
-	 * @throws IOException
 	 */
 	public CSVRuns getPlayerMaxFours() {
 		CSVRuns maxFoursPlayer = runsCSVList.stream().max((x, y) -> Integer.compare(x.fours, y.fours)).get();
@@ -100,10 +91,7 @@ public class IPLAnalysis {
 	/**
 	 * UC 3 : returns player scoring maximum number of sixes
 	 * 
-	 * @param filePath
 	 * @return
-	 * @throws CSVBuilderException
-	 * @throws IOException
 	 */
 	public CSVRuns getPlayerMaxSixes() {
 		CSVRuns maxFoursPlayer = runsCSVList.stream().max((x, y) -> Integer.compare(x.sixes, y.sixes)).get();
@@ -113,10 +101,7 @@ public class IPLAnalysis {
 	/**
 	 * UC 4 : returns player having max strike rate with 4s and 6s
 	 * 
-	 * @param filePath
 	 * @return
-	 * @throws CSVBuilderException
-	 * @throws IOException
 	 */
 	public CSVRuns getPlayerMaxStrikeRateWithFoursSixes() {
 		CSVRuns player = runsCSVList.stream()
@@ -135,10 +120,10 @@ public class IPLAnalysis {
 	 * @return
 	 */
 	public String getSortedJsonMaxAvgAndStrikeRate() {
-		Comparator<CSVRuns> iplCSVComparator = Comparator.comparing(entry -> entry.average);
-		this.sort(runsCSVList, iplCSVComparator.thenComparing(entry -> entry.strikeRate));
-		String jsonSortedPLayers = new Gson().toJson(runsCSVList);
-		return jsonSortedPLayers;
+		Comparator<CSVRuns> battingComparator = Comparator.comparing(entry -> entry.average);
+		this.sortBattingList(runsCSVList, battingComparator.thenComparing(entry -> entry.strikeRate));
+		String jsonSortedPlayers = new Gson().toJson(runsCSVList);
+		return jsonSortedPlayers;
 	}
 
 	/**
@@ -147,18 +132,42 @@ public class IPLAnalysis {
 	 * @return
 	 */
 	public String getSortedJsonMaxRunsAndAverage() {
-		Comparator<CSVRuns> iplCSVComparator = Comparator.comparing(entry -> entry.runs);
-		this.sort(runsCSVList, iplCSVComparator.thenComparing(entry -> entry.average));
-		String jsonSortedPLayers = new Gson().toJson(runsCSVList);
-		return jsonSortedPLayers;
+		Comparator<CSVRuns> battingComparator = Comparator.comparing(entry -> entry.runs);
+		this.sortBattingList(runsCSVList, battingComparator.thenComparing(entry -> entry.average));
+		String jsonSortedPlayers = new Gson().toJson(runsCSVList);
+		return jsonSortedPlayers;
 	}
 
-	private <E> void sort(List<E> csvList, Comparator<E> iplCSVComparator) {
+	private <E> void sortBattingList(List<E> csvList, Comparator<E> battingComparator) {
 		for (int i = 0; i < csvList.size(); i++) {
 			for (int j = 0; j < csvList.size() - i - 1; j++) {
 				E player1 = csvList.get(j);
 				E player2 = csvList.get(j + 1);
-				if (iplCSVComparator.compare(player1, player2) < 0) {
+				if (battingComparator.compare(player1, player2) < 0) {
+					csvList.set(j, player2);
+					csvList.set(j + 1, player1);
+				}
+			}
+		}
+	}
+
+	/**
+	 * UC 7 : returns top bowling average
+	 * 
+	 * @return
+	 */
+	public double getTopBowlingAvg() {
+		Comparator<CSVWickets> BowlingComparator = Comparator.comparing(entry -> entry.average);
+		this.sortBowlingList(wicketsCSVList, BowlingComparator);
+		return wicketsCSVList.get(0).average;
+	}
+
+	private <E> void sortBowlingList(List<CSVWickets> csvList, Comparator<CSVWickets> BowlingComparator) {
+		for (int i = 0; i < csvList.size(); i++) {
+			for (int j = 0; j < csvList.size() - i - 1; j++) {
+				CSVWickets player1 = csvList.get(j);
+				CSVWickets player2 = csvList.get(j + 1);
+				if (BowlingComparator.compare(player1, player2) > 0 && (player1.wickets != 0 && player2.wickets != 0)) {
 					csvList.set(j, player2);
 					csvList.set(j + 1, player1);
 				}
