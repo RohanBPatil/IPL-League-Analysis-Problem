@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.CSVBuilder.CSVBuilderException;
+import com.google.gson.Gson;
 
 class IPLAnalysisTest {
 	private static IPLAnalysis iplAnalysis;
@@ -15,8 +16,10 @@ class IPLAnalysisTest {
 	private static String WICKET_FILE_PATH = "C:\\Users\\abc\\eclipse-workspace\\com.iplleagueanalysisproblem\\WP DP Data_02 IPL2019FactsheetMostWkts.csv";
 
 	@BeforeAll
-	static void setUp() {
+	static void setUp() throws CSVBuilderException, IOException {
 		iplAnalysis = new IPLAnalysis();
+		iplAnalysis.loadRunsCSV(RUNS_FILE_PATH);
+		iplAnalysis.loadWicketsCSV(WICKET_FILE_PATH);
 	}
 
 	/**
@@ -54,8 +57,8 @@ class IPLAnalysisTest {
 	 * @throws IOException
 	 */
 	@Test
-	void givenRunsFilePath_shouldReturn_topBattingAvg() throws CSVBuilderException, IOException {
-		double maxBattingAvg = iplAnalysis.getTopBattingAvg(RUNS_FILE_PATH);
+	void givenRunsFilePath_shouldReturn_topBattingAvg() {
+		double maxBattingAvg = iplAnalysis.getTopBattingAvg();
 		assertEquals(83.2, maxBattingAvg);
 	}
 
@@ -66,8 +69,8 @@ class IPLAnalysisTest {
 	 * @throws IOException
 	 */
 	@Test
-	void givenRunsFilePath_shouldReturn_topStrikiingRate() throws CSVBuilderException, IOException {
-		double maxBattingAvg = iplAnalysis.getTopStrikingRate(RUNS_FILE_PATH);
+	void givenRunsFilePath_shouldReturn_topStrikiingRate() {
+		double maxBattingAvg = iplAnalysis.getTopStrikingRate();
 		assertEquals(333.33, maxBattingAvg);
 	}
 
@@ -78,11 +81,9 @@ class IPLAnalysisTest {
 	 * @throws IOException
 	 */
 	@Test
-	void givenRunsFilePath_shouldReturn_cricketerWithMaxFours() throws CSVBuilderException, IOException {
-		CSVRuns expectedMaxFoursPlayer = new CSVRuns(4, "Shikhar Dhawan", 16, 16, 1, 521, "97*", 34.73, 384, 135.67, 0,
-				5, 64, 11);
-		CSVRuns actualMaxFoursPlayer = iplAnalysis.getPlayerMaxFours(RUNS_FILE_PATH);
-		assertEquals(expectedMaxFoursPlayer, actualMaxFoursPlayer);
+	void givenRunsFilePath_shouldReturn_cricketerWithMaxFours() {
+		CSVRuns actualMaxFoursPlayer = iplAnalysis.getPlayerMaxFours();
+		assertEquals("Shikhar Dhawan", actualMaxFoursPlayer.playerName);
 	}
 
 	/**
@@ -92,11 +93,9 @@ class IPLAnalysisTest {
 	 * @throws IOException
 	 */
 	@Test
-	void givenRunsFilePath_shouldReturn_cricketerWithMaxSixes() throws CSVBuilderException, IOException {
-		CSVRuns expectedMaxSixesPlayer = new CSVRuns(5, "Andre Russell", 14, 13, 4, 510, "80*", 56.66, 249, 204.81, 0,
-				4, 31, 52);
-		CSVRuns actualMaxSixesPlayer = iplAnalysis.getPlayerMaxSixes(RUNS_FILE_PATH);
-		assertEquals(expectedMaxSixesPlayer, actualMaxSixesPlayer);
+	void givenRunsFilePath_shouldReturn_cricketerWithMaxSixes() {
+		CSVRuns actualMaxSixesPlayer = iplAnalysis.getPlayerMaxSixes();
+		assertEquals("Andre Russell", actualMaxSixesPlayer.playerName);
 	}
 
 	/**
@@ -106,10 +105,18 @@ class IPLAnalysisTest {
 	 * @throws IOException
 	 */
 	@Test
-	void givenRunsFilePath_shouldReturn_cricketerWithMaxStrikeRateWithFoursAndSixes()
-			throws CSVBuilderException, IOException {
-		CSVRuns expectedPlayer = new CSVRuns(97, "Ishant Sharma", 13, 3, 3, 10, "10*", 0, 3, 333.33, 0, 0, 1, 1);
-		CSVRuns actualPlayer = iplAnalysis.getPlayerMaxStrikeRateWithFoursSixes(RUNS_FILE_PATH);
-		assertEquals(expectedPlayer, actualPlayer);
+	void givenRunsFilePath_shouldReturn_cricketerWithMaxStrikeRateWithFoursAndSixes() {
+		CSVRuns actualPlayer = iplAnalysis.getPlayerMaxStrikeRateWithFoursSixes();
+		assertEquals("Ishant Sharma", actualPlayer.playerName);
+	}
+
+	/**
+	 * UC 5 : checking player having max average with max strike rate
+	 */
+	@Test
+	void givenRunsFilePath_shouldReturn_playerHavingGoodAvgWithBestStrikeRate() {
+		String jsonSortedPLayers = iplAnalysis.getSortedOnMaxRunsAndStrikeRate();
+		CSVRuns[] actualSortedPlayers = new Gson().fromJson(jsonSortedPLayers, CSVRuns[].class);
+		assertEquals("MS Dhoni", actualSortedPlayers[0].playerName);
 	}
 }

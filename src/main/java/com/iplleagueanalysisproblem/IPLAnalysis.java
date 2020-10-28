@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.List;
 
 import com.CSVBuilder.CSVBuilderException;
 import com.CSVBuilder.CSVBuilderFactory;
 import com.CSVBuilder.ICSVBuilder;
+import com.google.gson.Gson;
 
 public class IPLAnalysis {
 	List<CSVRuns> runsCSVList = null;
@@ -64,8 +66,7 @@ public class IPLAnalysis {
 	 * @throws CSVBuilderException
 	 * @throws IOException
 	 */
-	public double getTopBattingAvg(String filePath) throws CSVBuilderException, IOException {
-		loadRunsCSV(filePath);
+	public double getTopBattingAvg() {
 		double maxBattingAvg = runsCSVList.stream().map(entry -> entry.average).max(Double::compare).get();
 		return maxBattingAvg;
 	}
@@ -78,8 +79,7 @@ public class IPLAnalysis {
 	 * @throws CSVBuilderException
 	 * @throws IOException
 	 */
-	public double getTopStrikingRate(String filePath) throws CSVBuilderException, IOException {
-		loadRunsCSV(filePath);
+	public double getTopStrikingRate() {
 		double maxStrikingRate = runsCSVList.stream().map(entry -> entry.strikeRate).max(Double::compare).get();
 		return maxStrikingRate;
 	}
@@ -92,8 +92,7 @@ public class IPLAnalysis {
 	 * @throws CSVBuilderException
 	 * @throws IOException
 	 */
-	public CSVRuns getPlayerMaxFours(String filePath) throws CSVBuilderException, IOException {
-		loadRunsCSV(filePath);
+	public CSVRuns getPlayerMaxFours() {
 		CSVRuns maxFoursPlayer = runsCSVList.stream().max((x, y) -> Integer.compare(x.fours, y.fours)).get();
 		return maxFoursPlayer;
 	}
@@ -106,8 +105,7 @@ public class IPLAnalysis {
 	 * @throws CSVBuilderException
 	 * @throws IOException
 	 */
-	public CSVRuns getPlayerMaxSixes(String filePath) throws CSVBuilderException, IOException {
-		loadRunsCSV(filePath);
+	public CSVRuns getPlayerMaxSixes() {
 		CSVRuns maxFoursPlayer = runsCSVList.stream().max((x, y) -> Integer.compare(x.sixes, y.sixes)).get();
 		return maxFoursPlayer;
 	}
@@ -120,8 +118,7 @@ public class IPLAnalysis {
 	 * @throws CSVBuilderException
 	 * @throws IOException
 	 */
-	public CSVRuns getPlayerMaxStrikeRateWithFoursSixes(String filePath) throws CSVBuilderException, IOException {
-		loadRunsCSV(filePath);
+	public CSVRuns getPlayerMaxStrikeRateWithFoursSixes() {
 		CSVRuns player = runsCSVList.stream()
 				.max((x, y) -> Double.compare(calculateStrikeRateFoursSixes(x), calculateStrikeRateFoursSixes(y)))
 				.get();
@@ -131,7 +128,31 @@ public class IPLAnalysis {
 	private static double calculateStrikeRateFoursSixes(CSVRuns player) {
 		return (player.fours * 4 + player.sixes * 6) * 100 / player.ballsFaced;
 	}
-
+	
+	/**
+	 * UC 5 : returns player having max average with max strike rate
+	 * @return
+	 */
+	public String getSortedOnMaxRunsAndStrikeRate() {
+		Comparator<CSVRuns> iplCSVComparator = Comparator.comparing(entry -> entry.average);
+		this.sort(runsCSVList, iplCSVComparator.thenComparing(entry -> entry.strikeRate));
+		String jsonSortedPLayers = new Gson().toJson(runsCSVList);
+		return jsonSortedPLayers;
+	}
+	
+	private <E> void sort(List<E> csvList, Comparator<E> iplCSVComparator) {
+		for (int i = 0; i < csvList.size(); i++) {
+			for (int j = 0; j < csvList.size() - i - 1; j++) {
+				E player1 = csvList.get(j);
+				E player2 = csvList.get(j + 1);
+				if (iplCSVComparator.compare(player1, player2) < 0) {
+					csvList.set(j, player2);
+					csvList.set(j + 1, player1);
+				}
+			}
+		}
+	}
+	
 	public static void main(String[] args) {
 		System.out.println("Welcome to IPL League analysis Problem");
 	}
