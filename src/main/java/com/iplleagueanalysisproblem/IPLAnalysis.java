@@ -203,6 +203,18 @@ public class IPLAnalysis {
 		return numOfBalls / numOfWicketsWith4w5w;
 	}
 
+	/**
+	 * UC 11 : returns player having best bowling average with best strike rate
+	 * 
+	 * @return
+	 */
+	public String getSortedJsonBestBowlingAvgAndStrikeRate() {
+		Comparator<CSVWickets> bowlingComparator = Comparator.comparing(entry -> entry.average);
+		this.sortBowlingList(wicketsCSVList, bowlingComparator.thenComparing(entry -> entry.strikeRate));
+		String jsonSortedPlayers = new Gson().toJson(wicketsCSVList);
+		return jsonSortedPlayers;
+	}
+
 	private void sortBowlingList(List<CSVWickets> csvList, Comparator<CSVWickets> BowlingComparator) {
 		for (int i = 0; i < csvList.size(); i++) {
 			for (int j = 0; j < csvList.size() - i - 1; j++) {

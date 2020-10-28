@@ -151,4 +151,13 @@ class IPLAnalysisTest {
 		assertEquals("Alzarri Joseph", topStrikeRateWith4w5wPlayer);
 	}
 
+	/**
+	 * UC 11 : checking player having best bowling average with best strike rate
+	 */
+	@Test
+	void givenWicketsFilePath_shouldReturn_playerHavingGoodAvgWithBestStrikeRate() {
+		String jsonSortedPLayers = iplAnalysis.getSortedJsonBestBowlingAvgAndStrikeRate();
+		CSVWickets[] actualSortedPlayers = new Gson().fromJson(jsonSortedPLayers, CSVWickets[].class);
+		assertEquals("Anukul Roy", actualSortedPlayers[0].playerName);
+	}
 }
