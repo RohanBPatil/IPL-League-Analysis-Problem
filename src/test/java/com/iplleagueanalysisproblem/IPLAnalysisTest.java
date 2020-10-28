@@ -142,4 +142,13 @@ class IPLAnalysisTest {
 		assertEquals(4.8, topEconomy);
 	}
 
+	/**
+	 * UC 10 : checking player having best strike rate with 4 wickets and 5 wickets
+	 */
+	@Test
+	void givenWicketsFilePath_shouldReturn_topStrikeRateWith4w5w() {
+		String topStrikeRateWith4w5wPlayer = iplAnalysis.getPlayerWithBestStrikeRateWith4w5w();
+		assertEquals("Alzarri Joseph", topStrikeRateWith4w5wPlayer);
+	}
+
 }

@@ -183,6 +183,26 @@ public class IPLAnalysis {
 		return topEconomyPlayer.economy;
 	}
 
+	/**
+	 * UC 10 : returns player having best strike rate with 4 wickets and 5 wickets
+	 * 
+	 * @return
+	 */
+	public String getPlayerWithBestStrikeRateWith4w5w() {
+		CSVWickets topEconomyPlayer = wicketsCSVList.stream()
+				.min((x, y) -> Double.compare(calculateStrikeRateWith4w5w(x), calculateStrikeRateWith4w5w(y))).get();
+		return topEconomyPlayer.playerName;
+	}
+
+	private double calculateStrikeRateWith4w5w(CSVWickets player) {
+		double numOfWicketsWith4w5w = player.fourWickets * 4 + player.fiveWickets * 5;
+		if (numOfWicketsWith4w5w == 0)
+			return Double.MAX_VALUE;
+		int numOfBalls = (int) player.overs;
+		numOfBalls = numOfBalls * 6 + (int) ((player.overs - numOfBalls) * 10);
+		return numOfBalls / numOfWicketsWith4w5w;
+	}
+
 	private void sortBowlingList(List<CSVWickets> csvList, Comparator<CSVWickets> BowlingComparator) {
 		for (int i = 0; i < csvList.size(); i++) {
 			for (int j = 0; j < csvList.size() - i - 1; j++) {

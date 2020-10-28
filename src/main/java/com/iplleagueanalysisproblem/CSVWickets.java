@@ -8,7 +8,7 @@ public class CSVWickets {
 	public int position;
 
 	@CsvBindByName(column = "PLAYER", required = true)
-	public String player;
+	public String playerName;
 
 	@CsvBindByName(column = "Mat", required = true)
 	public int matches;
@@ -45,7 +45,7 @@ public class CSVWickets {
 
 	@Override
 	public String toString() {
-		return "IPLWicketsCSV{" + "Position='" + position + '\'' + ", Player='" + player + '\'' + ", Matches='"
+		return "IPLWicketsCSV{" + "Position='" + position + '\'' + ", Player='" + playerName + '\'' + ", Matches='"
 				+ matches + '\'' + ", Innings='" + innings + '\'' + ", Overs='" + overs + '\'' + ", Runs='" + runs
 				+ '\'' + ", Wickets='" + wickets + '\'' + ", Average='" + average + ", Economy='" + economy + '\''
 				+ ", Strike Rate='" + strikeRate + '\'' + ", 4w='" + fourWickets + '\'' + ", 5w='" + fiveWickets + '}';
