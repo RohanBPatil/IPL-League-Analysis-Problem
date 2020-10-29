@@ -2,13 +2,11 @@ package com.iplleagueanalysisproblem;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.CSVBuilder.CSVBuilderException;
 import com.google.gson.Gson;
 
 class IPLAnalysisTest {
@@ -17,7 +15,7 @@ class IPLAnalysisTest {
 	private static String WICKET_FILE_PATH = "C:\\Users\\abc\\eclipse-workspace\\com.iplleagueanalysisproblem\\WP DP Data_02 IPL2019FactsheetMostWkts.csv";
 
 	@BeforeAll
-	static void setUp() throws CSVBuilderException, IOException {
+	static void setUp() throws IPLLeagueAnalyserException {
 		iplAnalysis = new IPLAnalysis();
 		iplAnalysis.loadRunsCSV(RUNS_FILE_PATH);
 		iplAnalysis.loadWicketsCSV(WICKET_FILE_PATH);
@@ -31,8 +29,9 @@ class IPLAnalysisTest {
 		int numOfRecords = 0;
 		try {
 			numOfRecords = iplAnalysis.loadRunsCSV(RUNS_FILE_PATH);
-		} catch (Exception exception) {
-			exception.printStackTrace();
+		} catch (IPLLeagueAnalyserException exception) {
+			System.out.println(exception.type + " " + exception.getMessage());
+			;
 		}
 		assertEquals(101, numOfRecords);
 	}
@@ -187,8 +186,17 @@ class IPLAnalysisTest {
 	 * UC 14 : checking best all rounder player having most runs and wickets
 	 */
 	@Test
-	void givenWicketsFilePath_shouldReturn_bestAllRounderPlayerhavingMostRunsAndWickets() {
+	void givenRunsAndWicketsFilePath_shouldReturn_bestAllRounderPlayerhavingMostRunsAndWickets() {
 		List<String> sortedPlayers = iplAnalysis.getBestAllRounder();
 		assertEquals("Andre Russell", sortedPlayers.get(0));
+	}
+
+	/**
+	 * UC 15 : checking players scoring max hundreds with best batting averages
+	 */
+	@Test
+	void givenRunsFilePath_shouldReturn_playerHittingMaxHundredsWithBestAverages() {
+		List<CSVRuns> sortedPlayers = iplAnalysis.getPlayersWithMaxHundredsBestBattingAverage();
+		assertEquals("David Warner", sortedPlayers.get(0).playerName);
 	}
 }

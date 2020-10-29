@@ -27,10 +27,17 @@ public class IPLAnalysis {
 	 * @throws CSVBuilderException
 	 * @throws IOException
 	 */
-	private static <k> List<k> loadCSVData(String filePath, Class<k> csvClass) throws CSVBuilderException, IOException {
-		Reader reader = Files.newBufferedReader(Paths.get(filePath)); // no such file exception
-		ICSVBuilder<k> csvBuilder = CSVBuilderFactory.createCSVBuilder();
-		return csvBuilder.getCSVFileList(reader, csvClass);
+	private static <k> List<k> loadCSVData(String filePath, Class<k> csvClass) throws IPLLeagueAnalyserException {
+		try {
+			Reader reader = Files.newBufferedReader(Paths.get(filePath));
+			ICSVBuilder<k> csvBuilder = CSVBuilderFactory.createCSVBuilder();
+			return csvBuilder.getCSVFileList(reader, csvClass);
+		}
+		catch (CSVBuilderException exception) {
+			throw new IPLLeagueAnalyserException(exception.getMessage(), IPLLeagueAnalyserException.ExceptionType.UNABLE_TO_PARSE);
+		} catch (IOException exception) {
+			throw new IPLLeagueAnalyserException(exception.getMessage(), IPLLeagueAnalyserException.ExceptionType.INCORRECT_FILE);
+		}
 	}
 
 	/**
@@ -38,10 +45,9 @@ public class IPLAnalysis {
 	 * 
 	 * @param filePath
 	 * @return
-	 * @throws CSVBuilderException
-	 * @throws IOException
+	 * @throws IPLLeagueAnalyserException 
 	 */
-	public int loadRunsCSV(String filePath) throws CSVBuilderException, IOException {
+	public int loadRunsCSV(String filePath) throws IPLLeagueAnalyserException {
 		runsCSVList = loadCSVData(filePath, CSVRuns.class);
 		return runsCSVList.size();
 	}
@@ -51,10 +57,9 @@ public class IPLAnalysis {
 	 * 
 	 * @param filePath
 	 * @return
-	 * @throws CSVBuilderException
-	 * @throws IOException
+	 * @throws IPLLeagueAnalyserException 
 	 */
-	public int loadWicketsCSV(String filePath) throws CSVBuilderException, IOException {
+	public int loadWicketsCSV(String filePath) throws IPLLeagueAnalyserException {
 		wicketsCSVList = loadCSVData(filePath, CSVWickets.class);
 		return wicketsCSVList.size();
 	}
@@ -268,6 +273,17 @@ public class IPLAnalysis {
 				.collect(Collectors.toList());
 		return mostRunsPlayerList.stream().distinct().filter(mostWicketsPlayerList::contains)
 				.collect(Collectors.toList());
+	}
+
+	/**
+	 * UC 15 : returns players scoring max hundreds with best batting averages
+	 * 
+	 * @return
+	 */
+	public List<CSVRuns> getPlayersWithMaxHundredsBestBattingAverage() {
+		Comparator<CSVRuns> battingComparator = Comparator.comparing(entry -> entry.hundreds);
+		this.sort(runsCSVList, battingComparator.thenComparing(entry -> entry.average));
+		return runsCSVList;
 	}
 
 	public static void main(String[] args) {
