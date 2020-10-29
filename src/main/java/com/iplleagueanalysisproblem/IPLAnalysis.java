@@ -252,6 +252,24 @@ public class IPLAnalysis {
 		return result;
 	}
 
+	/**
+	 * UC 14 : returns best all rounder player having most runs and wickets
+	 * 
+	 * @return
+	 */
+	public List<String> getBestAllRounder() {
+		Comparator<CSVRuns> battingComparator = Comparator.comparing(entry -> entry.runs);
+		Comparator<CSVWickets> bowlingComparator = Comparator.comparing(entry -> entry.wickets);
+		this.sort(runsCSVList, battingComparator);
+		this.sort(wicketsCSVList, bowlingComparator);
+		List<String> mostRunsPlayerList = runsCSVList.stream().limit(40).map(entry -> entry.playerName)
+				.collect(Collectors.toList());
+		List<String> mostWicketsPlayerList = wicketsCSVList.stream().limit(40).map(entry -> entry.playerName)
+				.collect(Collectors.toList());
+		return mostRunsPlayerList.stream().distinct().filter(mostWicketsPlayerList::contains)
+				.collect(Collectors.toList());
+	}
+
 	public static void main(String[] args) {
 		System.out.println("Welcome to IPL League analysis Problem");
 	}

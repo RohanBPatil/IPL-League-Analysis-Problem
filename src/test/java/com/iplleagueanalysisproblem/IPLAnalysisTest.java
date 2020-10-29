@@ -182,4 +182,13 @@ class IPLAnalysisTest {
 		List<String> sortedPlayers = iplAnalysis.getPlayerWithBestBattingAndBowlingAvg();
 		assertEquals("Andre Russell", sortedPlayers.get(0));
 	}
+
+	/**
+	 * UC 14 : checking best all rounder player having most runs and wickets
+	 */
+	@Test
+	void givenWicketsFilePath_shouldReturn_bestAllRounderPlayerhavingMostRunsAndWickets() {
+		List<String> sortedPlayers = iplAnalysis.getBestAllRounder();
+		assertEquals("Andre Russell", sortedPlayers.get(0));
+	}
 }
