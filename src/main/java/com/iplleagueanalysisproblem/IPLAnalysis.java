@@ -32,11 +32,12 @@ public class IPLAnalysis {
 			Reader reader = Files.newBufferedReader(Paths.get(filePath));
 			ICSVBuilder<k> csvBuilder = CSVBuilderFactory.createCSVBuilder();
 			return csvBuilder.getCSVFileList(reader, csvClass);
-		}
-		catch (CSVBuilderException exception) {
-			throw new IPLLeagueAnalyserException(exception.getMessage(), IPLLeagueAnalyserException.ExceptionType.UNABLE_TO_PARSE);
+		} catch (CSVBuilderException exception) {
+			throw new IPLLeagueAnalyserException(exception.getMessage(),
+					IPLLeagueAnalyserException.ExceptionType.UNABLE_TO_PARSE);
 		} catch (IOException exception) {
-			throw new IPLLeagueAnalyserException(exception.getMessage(), IPLLeagueAnalyserException.ExceptionType.INCORRECT_FILE);
+			throw new IPLLeagueAnalyserException(exception.getMessage(),
+					IPLLeagueAnalyserException.ExceptionType.INCORRECT_FILE);
 		}
 	}
 
@@ -45,7 +46,7 @@ public class IPLAnalysis {
 	 * 
 	 * @param filePath
 	 * @return
-	 * @throws IPLLeagueAnalyserException 
+	 * @throws IPLLeagueAnalyserException
 	 */
 	public int loadRunsCSV(String filePath) throws IPLLeagueAnalyserException {
 		runsCSVList = loadCSVData(filePath, CSVRuns.class);
@@ -57,7 +58,7 @@ public class IPLAnalysis {
 	 * 
 	 * @param filePath
 	 * @return
-	 * @throws IPLLeagueAnalyserException 
+	 * @throws IPLLeagueAnalyserException
 	 */
 	public int loadWicketsCSV(String filePath) throws IPLLeagueAnalyserException {
 		wicketsCSVList = loadCSVData(filePath, CSVWickets.class);
@@ -284,6 +285,20 @@ public class IPLAnalysis {
 		Comparator<CSVRuns> battingComparator = Comparator.comparing(entry -> entry.hundreds);
 		this.sort(runsCSVList, battingComparator.thenComparing(entry -> entry.average));
 		return runsCSVList;
+	}
+
+	/**
+	 * UC 16 : returns players hitting zero hundreds and fifties with best batting
+	 * averages
+	 * 
+	 * @return
+	 */
+	public List<CSVRuns> getPlayerHittingZeroHundredsAndFiftysWithBestAverage() {
+		List<CSVRuns> playersWithZeroHundredsFiftys = runsCSVList.stream()
+				.filter(entry -> entry.hundreds + entry.fiftys == 0).collect(Collectors.toList());
+		Comparator<CSVRuns> battingComparator = Comparator.comparing(entry -> entry.average);
+		this.sort(playersWithZeroHundredsFiftys, battingComparator);
+		return playersWithZeroHundredsFiftys;
 	}
 
 	public static void main(String[] args) {

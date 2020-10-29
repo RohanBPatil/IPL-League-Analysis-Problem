@@ -199,4 +199,13 @@ class IPLAnalysisTest {
 		List<CSVRuns> sortedPlayers = iplAnalysis.getPlayersWithMaxHundredsBestBattingAverage();
 		assertEquals("David Warner", sortedPlayers.get(0).playerName);
 	}
+
+	/**
+	 * UC 16 : checking players hitting zero hundreds and fifties with best batting
+	 */
+	@Test
+	void givenRunsFilePath_shouldReturn_playerHittingZeroHundredsAndFiftysWithBestAverages() {
+		List<CSVRuns> sortedPlayers = iplAnalysis.getPlayerHittingZeroHundredsAndFiftysWithBestAverage();
+		assertEquals("Marcus Stoinis", sortedPlayers.get(0).playerName);
+	}
 }
