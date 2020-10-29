@@ -3,6 +3,7 @@ package com.iplleagueanalysisproblem;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -55,8 +56,8 @@ class IPLAnalysisTest {
 	 */
 	@Test
 	void givenRunsFilePath_shouldReturn_topBattingAvg() {
-		double maxBattingAvg = iplAnalysis.getTopBattingAvg();
-		assertEquals(83.2, maxBattingAvg);
+		List<CSVRuns> battingAvgSortedList = iplAnalysis.getTopBattingAvg();
+		assertEquals(83.2, battingAvgSortedList.get(0).average);
 	}
 
 	/**
@@ -120,8 +121,9 @@ class IPLAnalysisTest {
 	 */
 	@Test
 	void givenWicketsFilePath_shouldReturn_topBowlingAvg() {
-		double topBowlingAvg = iplAnalysis.getTopBowlingAvg();
-		assertEquals(11.0, topBowlingAvg);
+		List<CSVWickets> bowlingAvgSortedList = iplAnalysis.getTopBowlingAvg();
+		assertEquals(11.0, bowlingAvgSortedList.get(0).average);
+		assertEquals(14.0, bowlingAvgSortedList.get(1).average);
 	}
 
 	/**
@@ -169,5 +171,15 @@ class IPLAnalysisTest {
 		String jsonSortedPLayers = iplAnalysis.getSortedJsonMaxWicketsWithBestBowlingAvg();
 		CSVWickets[] actualSortedPlayers = new Gson().fromJson(jsonSortedPLayers, CSVWickets[].class);
 		assertEquals("Imran Tahir", actualSortedPlayers[0].playerName);
+		assertEquals("Kagiso Rabada", actualSortedPlayers[1].playerName);
+	}
+
+	/**
+	 * UC 13 : checking player having best batting and bowling average
+	 */
+	@Test
+	void givenWicketsFilePath_shouldReturn_playerhavingBestBattingAndBowlingAvg() {
+		List<String> sortedPlayers = iplAnalysis.getPlayerWithBestBattingAndBowlingAvg();
+		assertEquals("Andre Russell", sortedPlayers.get(0));
 	}
 }

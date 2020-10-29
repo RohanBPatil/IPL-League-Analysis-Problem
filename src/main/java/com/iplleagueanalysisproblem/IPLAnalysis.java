@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.CSVBuilder.CSVBuilderException;
 import com.CSVBuilder.CSVBuilderFactory;
@@ -63,9 +64,10 @@ public class IPLAnalysis {
 	 * 
 	 * @return
 	 */
-	public double getTopBattingAvg() {
-		double maxBattingAvg = runsCSVList.stream().map(entry -> entry.average).max(Double::compare).get();
-		return maxBattingAvg;
+	public List<CSVRuns> getTopBattingAvg() {
+		Comparator<CSVRuns> battingComparator = Comparator.comparing(entry -> entry.average);
+		this.sort(runsCSVList, battingComparator);
+		return runsCSVList;
 	}
 
 	/**
@@ -121,7 +123,7 @@ public class IPLAnalysis {
 	 */
 	public String getSortedJsonMaxAvgAndStrikeRate() {
 		Comparator<CSVRuns> battingComparator = Comparator.comparing(entry -> entry.average);
-		this.sortBattingList(runsCSVList, battingComparator.thenComparing(entry -> entry.strikeRate));
+		this.sort(runsCSVList, battingComparator.thenComparing(entry -> entry.strikeRate));
 		String jsonSortedPlayers = new Gson().toJson(runsCSVList);
 		return jsonSortedPlayers;
 	}
@@ -133,16 +135,16 @@ public class IPLAnalysis {
 	 */
 	public String getSortedJsonMaxRunsAndAverage() {
 		Comparator<CSVRuns> battingComparator = Comparator.comparing(entry -> entry.runs);
-		this.sortBattingList(runsCSVList, battingComparator.thenComparing(entry -> entry.average));
+		this.sort(runsCSVList, battingComparator.thenComparing(entry -> entry.average));
 		String jsonSortedPlayers = new Gson().toJson(runsCSVList);
 		return jsonSortedPlayers;
 	}
 
-	private void sortBattingList(List<CSVRuns> csvList, Comparator<CSVRuns> battingComparator) {
+	private <k> void sort(List<k> csvList, Comparator<k> battingComparator) {
 		for (int i = 0; i < csvList.size(); i++) {
 			for (int j = 0; j < csvList.size() - i - 1; j++) {
-				CSVRuns player1 = csvList.get(j);
-				CSVRuns player2 = csvList.get(j + 1);
+				k player1 = csvList.get(j);
+				k player2 = csvList.get(j + 1);
 				if (battingComparator.compare(player1, player2) < 0) {
 					csvList.set(j, player2);
 					csvList.set(j + 1, player1);
@@ -156,10 +158,12 @@ public class IPLAnalysis {
 	 * 
 	 * @return
 	 */
-	public double getTopBowlingAvg() {
+	public List<CSVWickets> getTopBowlingAvg() {
 		Comparator<CSVWickets> BowlingComparator = Comparator.comparing(entry -> entry.average);
-		this.sortBowlingList(wicketsCSVList, BowlingComparator);
-		return wicketsCSVList.get(0).average;
+		List<CSVWickets> tempList = wicketsCSVList.stream().filter(entry -> entry.wickets != 0)
+				.filter(entry -> entry.average != 0).collect(Collectors.toList());
+		this.sort(tempList, BowlingComparator.reversed());
+		return tempList;
 	}
 
 	/**
@@ -169,8 +173,10 @@ public class IPLAnalysis {
 	 */
 	public double getTopStrikeRate() {
 		Comparator<CSVWickets> BowlingComparator = Comparator.comparing(entry -> entry.strikeRate);
-		this.sortBowlingList(wicketsCSVList, BowlingComparator);
-		return wicketsCSVList.get(0).strikeRate;
+		List<CSVWickets> tempList = wicketsCSVList.stream().filter(entry -> entry.wickets != 0)
+				.collect(Collectors.toList());
+		this.sort(tempList, BowlingComparator.reversed());
+		return tempList.get(0).strikeRate;
 	}
 
 	/**
@@ -209,9 +215,11 @@ public class IPLAnalysis {
 	 * @return
 	 */
 	public String getSortedJsonBestBowlingAvgAndStrikeRate() {
+		List<CSVWickets> tempList = wicketsCSVList.stream().filter(entry -> entry.wickets != 0)
+				.filter(entry -> entry.average != 0).collect(Collectors.toList());
 		Comparator<CSVWickets> bowlingComparator = Comparator.comparing(entry -> entry.average);
-		this.sortBowlingList(wicketsCSVList, bowlingComparator.thenComparing(entry -> entry.strikeRate));
-		String jsonSortedPlayers = new Gson().toJson(wicketsCSVList);
+		this.sort(tempList, bowlingComparator.thenComparing(entry -> entry.strikeRate).reversed());
+		String jsonSortedPlayers = new Gson().toJson(tempList);
 		return jsonSortedPlayers;
 	}
 
@@ -221,23 +229,27 @@ public class IPLAnalysis {
 	 * @return
 	 */
 	public String getSortedJsonMaxWicketsWithBestBowlingAvg() {
+		List<CSVWickets> tempList = wicketsCSVList.stream().filter(entry -> entry.wickets != 0)
+				.filter(entry -> entry.average != 0).collect(Collectors.toList());
 		Comparator<CSVWickets> bowlingComparator = Comparator.comparing(entry -> -entry.wickets);
-		this.sortBowlingList(wicketsCSVList, bowlingComparator.thenComparing(entry -> entry.average));
-		String jsonSortedPlayers = new Gson().toJson(wicketsCSVList);
+		this.sort(tempList, bowlingComparator.thenComparing(entry -> entry.average).reversed());
+		String jsonSortedPlayers = new Gson().toJson(tempList);
 		return jsonSortedPlayers;
 	}
 
-	private void sortBowlingList(List<CSVWickets> csvList, Comparator<CSVWickets> BowlingComparator) {
-		for (int i = 0; i < csvList.size(); i++) {
-			for (int j = 0; j < csvList.size() - i - 1; j++) {
-				CSVWickets player1 = csvList.get(j);
-				CSVWickets player2 = csvList.get(j + 1);
-				if (BowlingComparator.compare(player1, player2) > 0 && (player1.wickets != 0 && player2.wickets != 0)) {
-					csvList.set(j, player2);
-					csvList.set(j + 1, player1);
-				}
-			}
-		}
+	/**
+	 * UC 13 : returns player having best batting and bowling average
+	 * 
+	 * @return
+	 */
+	public List<String> getPlayerWithBestBattingAndBowlingAvg() {
+		List<String> battingAvgSortList = this.getTopBattingAvg().stream().map(entry -> entry.playerName).limit(40)
+				.collect(Collectors.toList());
+		List<String> bowlingAvgSortList = this.getTopBowlingAvg().stream().map(entry -> entry.playerName).limit(40)
+				.collect(Collectors.toList());
+		List<String> result = battingAvgSortList.stream().distinct().filter(bowlingAvgSortList::contains)
+				.collect(Collectors.toList());
+		return result;
 	}
 
 	public static void main(String[] args) {
